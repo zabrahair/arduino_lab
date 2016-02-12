@@ -14,6 +14,7 @@ int irCode = 0x00;
 // Initializes timer functions
 void initTimer(void)  
 {
+  Serial.println("Initialized Timer Start >>>");
   TCCR1A = 0x00;  
   // Defines the source of timer.
   TCCR1B = 0x05;
@@ -21,6 +22,7 @@ void initTimer(void)
   TCNT1 = 0x00;
   // Forbbiden interrupt of timer overflow
   TIMSK1 = 0x00;
+  Serial.println("<<< Initialized Timer End.");
 }
 
 // Execute Decode Result Function
@@ -106,9 +108,12 @@ void pulseDeal()
 // Decode Function
 void remoteDecode(void)
 {
+  //Serial.println("remoteDecode funciton start >>>");
   TCNT1 = 0x00;
   while (digitalRead(IR_IN))
   {
+
+    Serial.println(TCNT1, DEC);
     if(TCNT1 >= 1563)
     {
       irCode = 0xff00;
@@ -147,12 +152,18 @@ void remoteDecode(void)
       }
     }
   }
+
+  //Serial.println("<<< remoteDecode funciton end.");
 }
 void setup() {
   unsigned char i;
+  Serial.begin(9600);
+  Serial.println("Start Demo: Remote Controller.");
   pinMode(LED_RED, OUTPUT);
   pinMode(BUZZER, OUTPUT);
   pinMode(IR_IN, INPUT);
+
+  
 
 }
 
